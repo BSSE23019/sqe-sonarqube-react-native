@@ -1,55 +1,68 @@
-# Assignment 04 — A Social Feed on the Dashboard
+# SQE: SonarQube Analysis of a React Native App
 
-Fall 2026 · Full Stack: Mobile App & Web Development · ITU
+This repository contains the React Native app I analysed with SonarQube for the
+Software Quality Engineering assignment (Part b: Basic Quality Report).
 
-## What is here
+The app is a small social feed. It is based on my Lab 04 code and extended in
+Assignment 4 with a Feed tab.
 
-An **empty React Native shell** — the project files, with no app code. Bring
-your own Lab 04 `src/` into it and add the Feed tab.
+## About the app
 
-| | |
-|---|---|
-| `assignment4.pdf` | the handout: read this first |
-| `src/App.js` | a placeholder screen, so the project runs before you start |
-| `__tests__/shared.test.js` | the tests you can run as often as you like |
-| `package.json` | the dependencies and versions to use. Do not add any |
-| `android/` | configured, with the Poppins fonts already registered |
-| `index.js`, `app.json`, `babel.config.js`, `metro.config.js`, `jest.setup.js` | project config |
+- Welcome, Login, Sign Up and Forgot Password screens
+- Profile and Edit Profile screens
+- Feed tab where a logged-in user can write posts and like them
+- `AuthContext` for the logged-in user
+- Users and posts are stored locally with AsyncStorage
 
-## Your lab code is not in here
+Built with React Native, React Navigation and Jest.
 
-You continue your **own Lab 04 app**: the six screens, `AuthContext` and
-`src/theme` you already wrote. Copy your `src/` over the one in this repo,
-keeping the file names you used in the lab.
+## Project structure
 
-Your lab screens were marked under Lab 04 and are **not marked again** here.
-This assignment marks only what you add. The lab app still has to run, though,
-because the Feed reads the logged-in user from your `AuthContext`.
-
-## Getting started
-
-```sh
-npm install
-npx react-native run-android     # the placeholder screen should appear
+```
+src/
+  assets/      images and fonts
+  components/  reusable UI components
+  context/     AuthContext
+  lib/         userStore, postStore, validate
+  platform/    platform helpers
+  screens/     app screens
+  theme/       colors, fonts, metrics
+__tests__/     Jest tests
 ```
 
-Then copy in your Lab 04 `src/`, and build the Feed tab: `FeedScreen.js`,
-`postStore.js`, `FeedIcon.js`, and the second tab in `App.js`.
+## Running the project
 
-```sh
+```
+npm install
+npm start
+npm run android
 npm test
 ```
 
-The tests only pass once your lab code and the Feed are both in place. Before
-that they will report the files they could not find — that is expected, not a
-broken project.
+## SonarQube analysis
 
-## Marking
+SonarQube Community Build was run locally in Docker and the `src` folder was
+scanned with SonarScanner for NPM:
 
-`shared.test.js` is not the whole mark. Hidden tests check rules the handout
-states that these do not, so read the requirements rather than coding until the
-visible tests go green. Styling is **not** marked: the colours and sizes on the
-handout's screenshots are there so your screen looks right, not to be graded.
+```
+docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+npm install -g @sonar/scan
+sonar-scanner-npm -Dsonar.host.url=http://localhost:9000 -Dsonar.token=<token> -Dsonar.projectKey=React-Native-Assignment-4 -Dsonar.sources=src
+```
 
-Submit your repository and a screen recording of two accounts posting, liking
-and deleting.
+### Results
+
+| Metric | Result |
+|---|---|
+| Lines of code (ncloc) | 1,994 |
+| Source files | 31 |
+| Security | 1 issue, rating C |
+| Reliability | 2 issues, rating C |
+| Maintainability | 22 issues, rating A |
+| Coverage | 0.0% (no coverage report imported) |
+| Duplications | 4.1% |
+| Security hotspots | 0 |
+| Quality Gate | Passed |
+
+The full steps, screenshots and my explanation of each metric are in the
+submitted report.
